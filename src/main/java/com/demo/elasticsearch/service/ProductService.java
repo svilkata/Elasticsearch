@@ -2,14 +2,12 @@ package com.demo.elasticsearch.service;
 
 import com.demo.elasticsearch.model.Product;
 import com.demo.elasticsearch.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-    private ProductRepository productRepo;
+    private final ProductRepository productRepo;
 
-    @Autowired
     public ProductService(ProductRepository productRepo) {
         this.productRepo = productRepo;
     }
