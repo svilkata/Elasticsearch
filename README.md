@@ -2,7 +2,11 @@
 
 ### Running Elasticsearch in Docker container
 https://hub.docker.com/_/elasticsearch?uuid=9BF08200-5218-4C99-9584-7E49DA147AAA
-1. With docker CLI commands:
+
+https://www.elastic.co/guide/en/elasticsearch/reference/8.15/docker.html
+
+I. With docker CLI commands:
+1. Elasticsearch engine starting **without security**
   - docker pull elasticsearch:8.15.2 (docker pull docker.elastic.co/elasticsearch/elasticsearch:8.15.2)
   - docker network create elastic_network
   - docker run --name es01 --net elastic_network -p 9200:9200 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.15.2
@@ -22,13 +26,34 @@ After running for the first time our Spring application, the name of our documen
   - docker container remove <container_id>
   - docker container prune
 
-2. With docker-compose file we benefit:
-  - several nodes in a cluster
+2. Kibana GUI for Elasticsearch starting **without security**
+  - docker pull docker.elastic.co/kibana/kibana:8.15.2
+  - docker run --name kib01 --net elastic_network -p 5601:5601 -e "ELASTICSEARCH_HOSTS=http://es01:9200" docker.elastic.co/kibana/kibana:8.15.2
+  - GUI is available on localhost:5601
+
+![img_3.png](img_3.png)
+
+
+
+3. Elasticsearch engine starting **with security** enabled:
+- docker run --name es01 --net elastic_network -p 9200:9200 -it -e "discovery.type=single-node" -e "xpack.security.enrollment.enabled=true" docker.elastic.co/elasticsearch/elasticsearch:8.15.2
+
+![img_2.png](img_2.png)
+
+
+
+
+II. With docker-compose file we benefit:
   - keeping/preserving data entered so far in a docker volume
-  - Kibana GUI for Elasticsearch
 
 
-### Elasticsearch integrated search API
+### Test all the CRUD operations
+Using POSTMAN and the resource http://localhost:8080/api/products
+
+
+### Elasticsearch integrated search query API - based on Elasticsearch DSL (JSON)
+https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html
+
 You can run this resource http://localhost:9200/product_index/_search on the browser to see the current available records.
 
 If you run this resource http://localhost:9200/product_index/_search from Postman (allowed: [GET, POST]), 
