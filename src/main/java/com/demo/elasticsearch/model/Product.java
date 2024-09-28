@@ -1,8 +1,10 @@
 package com.demo.elasticsearch.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "product_index")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
     private int id;
     private String name;

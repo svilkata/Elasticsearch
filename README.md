@@ -1,4 +1,6 @@
 # Demo about Elasticsearch integrated with Spring Boot
+https://spring.io/projects/spring-data-elasticsearch#learn
+
 
 ### Running Elasticsearch in Docker container
 https://hub.docker.com/_/elasticsearch?uuid=9BF08200-5218-4C99-9584-7E49DA147AAA
@@ -54,9 +56,18 @@ Using POSTMAN and the resource http://localhost:8080/api/products
 ### Elasticsearch integrated search query API - based on Elasticsearch DSL (JSON)
 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html
 
-You can run this resource http://localhost:9200/product_index/_search on the browser to see the current available records.
+You can run this resource http://localhost:9200/product_index/_search on the browser to see the current available records for index `product_index`.
+
+In case you want to search among all the tables (documents/indexes), then use http://localhost:9200/_search
 
 If you run this resource http://localhost:9200/product_index/_search from Postman (allowed: [GET, POST]), 
 you can specify specific search options in the body request:
 - `{"query": {"match": {"id": 101}}}`
 - `{"query": {"wildcard": {"name": "m*"}}}` - searching caseInsensitive where `name` begins with `m`
+- `{"query": {"match_all": {}}}`
+
+
+### Overriding Elasticsearch DSL search API with Java
+- run GET on `localhost:8080/api/matchall` - searches in all indexes (documents/tables)
+- run GET on `localhost:8080/api/products/matchallproducts` - searches in index `product_index`
+- run GET on `localhost:8080/api/products/matchallproducts/{fieldValue}` - searches in index `product_index` with that fieldValue  
