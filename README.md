@@ -7,7 +7,7 @@ https://hub.docker.com/_/elasticsearch?uuid=9BF08200-5218-4C99-9584-7E49DA147AAA
 
 https://www.elastic.co/guide/en/elasticsearch/reference/8.15/docker.html
 
-I. With docker CLI commands:
+**I. With docker CLI commands:**
 1. Elasticsearch engine starting **without security**
   - docker pull elasticsearch:8.15.2 (docker pull docker.elastic.co/elasticsearch/elasticsearch:8.15.2)
   - docker network create elastic_network
@@ -27,6 +27,8 @@ After running for the first time our Spring application, the name of our documen
   - docker container ls --all
   - docker container remove <container_id>
   - docker container prune
+  - docker network ls
+  - docker network rm <network_name>
 
 2. Kibana GUI for Elasticsearch starting **without security**
   - docker pull docker.elastic.co/kibana/kibana:8.15.2
@@ -45,8 +47,17 @@ After running for the first time our Spring application, the name of our documen
 
 
 
-II. With docker-compose file we benefit:
-  - keeping/preserving data entered so far in a docker volume
+**II. With docker-compose file:**
+1. One node cluster and Kibana
+  - run `docker-compose up` to load the **docker-compose.yaml** file
+  - run `docker-compose down` to preserve data entered so far
+  - run `docker-compose down --volumes` to delete also the volume and the data entered so far 
+
+2. Three node cluster and Kibana
+  - run `docker-compose -f docker-compose-3Node-cluster.yaml up` to load the **docker-compose-3Node-cluster.yaml**
+  - run `docker-compose -f docker-compose-3Node-cluster.yaml down` to preserve data entered so far
+  - run `docker-compose -f docker-compose-3Node-cluster.yaml down --volumes` to delete all 3 volumes and erase the data entered so far
+
 
 
 ### Test all the CRUD operations

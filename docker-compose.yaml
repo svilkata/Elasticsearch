@@ -9,6 +9,8 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    volumes:
+      - data01:/usr/share/elasticsearch/data
     networks:
       - elastic_network
 
@@ -24,6 +26,10 @@ services:
     networks:
       - elastic_network
 
+volumes:
+  data01:
+    driver: local
+
 networks:
-  elastic:
+  elastic_network:
     driver: bridge
