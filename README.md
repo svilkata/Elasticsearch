@@ -33,7 +33,7 @@ After running for the first time our Spring application, the name of our documen
 2. Kibana GUI for Elasticsearch starting **without security**
   - docker pull docker.elastic.co/kibana/kibana:8.15.2
   - docker run --name kib01 --net elastic_network -p 5601:5601 -e "ELASTICSEARCH_HOSTS=http://es01:9200" docker.elastic.co/kibana/kibana:8.15.2
-  - GUI is available on localhost:5601
+  - GUI is available on localhost:5601, and **dev tools** are on http://localhost:5601/app/dev_tools#/console
 
 ![img_3.png](img_3.png)
 
@@ -73,12 +73,14 @@ In case you want to search among all the tables (documents/indexes), then use ht
 
 If you run this resource http://localhost:9200/product_index/_search from Postman (allowed: [GET, POST]), 
 you can specify specific search options in the body request:
-- `{"query": {"match": {"id": 101}}}`
+- `{"query": {"match": {"id": 101}}}` - match query
 - `{"query": {"wildcard": {"name": "m*"}}}` - searching caseInsensitive where `name` begins with `m`
-- `{"query": {"match_all": {}}}`
+- `{"query": {"match_all": {}}}` - match_all query
+- `{"query": {"bool": {"filter": [{"term": {"name": "tablet"}}], "must": [{"match": {"quantity": 2}}]}}}` - bool query - https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
 
 
-### Overriding Elasticsearch DSL search API with Java
+### Implementing Elasticsearch DSL search API with Java
 - run GET on `localhost:8080/api/matchall` - searches in all indexes (documents/tables)
 - run GET on `localhost:8080/api/products/matchallproducts` - searches in index `product_index`
-- run GET on `localhost:8080/api/products/matchallproducts/{fieldValue}` - searches in index `product_index` with that fieldValue  
+- run GET on `localhost:8080/api/products/matchallproducts/{fieldValue}` - searches in index `product_index` with that fieldValue
+- run GET on `localhost:8080/api/products/boolquery/{productNameValue}/{quantity}` - searches in index `product_index` with bool combined query

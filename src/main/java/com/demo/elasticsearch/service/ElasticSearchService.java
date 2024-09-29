@@ -46,4 +46,12 @@ public class ElasticSearchService {
 
         return searchResponse;
     }
+
+    public SearchResponse<Product> boolQueryImpl(String productNameValue, Integer quantity) throws IOException {
+        Supplier<Query> supplier = ElasticsearchUtil.supplierBool(productNameValue, quantity);
+        SearchResponse<Product> searchResponse = elasticsearchClient.search(s -> s.index("product_index").query(supplier.get()), Product.class);
+        System.out.println("Elasticsearch query is " + supplier.get().toString());
+
+        return searchResponse;
+    }
 }
