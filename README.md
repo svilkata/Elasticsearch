@@ -79,6 +79,9 @@ you can specify specific search options in the body request:
 - `{"query": {"bool": {"filter": [{"term": {"name": "tablet"}}], "must": [{"match": {"quantity": 2}}]}}}` - bool query - https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
 
 
+### Elasticsearch DSL - create index and document query API
+- POST query - http://localhost:9200/users/_doc/103 with body: `{"userId": 103, "name": "Svilen", "age": 39}` - created index `users` with a document record `{"userId": 103, "name": "Svilen", "age": 39}`
+
 ### Implementing Elasticsearch DSL search API with Java
 - run GET on `localhost:8080/api/matchall` - searches in all indexes (documents/tables)
 - run GET on `localhost:8080/api/products/matchallproducts` - searches in index `product_index`
