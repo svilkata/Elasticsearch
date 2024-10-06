@@ -64,7 +64,7 @@ After running for the first time our Spring application, the name of our documen
 Using POSTMAN and the resource http://localhost:8080/api/products
 
 
-### Elasticsearch integrated search query API - based on Elasticsearch DSL (JSON)
+### Elasticsearch integrated search query API - based on Elasticsearch DSL (mostly JSON DSL)
 https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html
 
 You can run this resource http://localhost:9200/product_index/_search on the browser to see the current available records for index `product_index`.
@@ -89,3 +89,19 @@ you can specify specific search options in the body request:
 - run GET on `localhost:8080/api/products/matchallproducts` - searches in index `product_index`
 - run GET on `localhost:8080/api/products/matchallproducts/{fieldValue}` - searches in index `product_index` with that fieldValue
 - run GET on `localhost:8080/api/products/boolquery/{productNameValue}/{quantity}` - searches in index `product_index` with bool combined query
+
+
+### More configuration of Elasticsearch
+1. Elasticsearch Clients - **Imperative Rest Client**(ElasticsearchConfiguration) or **Reactive Rest Client**
+2. We could use **Elasticsearch Object Mapping** - registering converters, using annotations for mapping such as @Field, using Elasticsearch Query Builder, etc - https://docs.spring.io/spring-data/elasticsearch/reference/elasticsearch/object-mapping.html
+3. We could use blocking **Elasticsearch Operations** 
+- **IndexOperations** defines actions on index level like **creating or deleting an index**.
+- **DocumentOperations** defines actions to store, update and retrieve entities based on their id.
+- **SearchOperations** define the actions to search for multiple entities using queries
+- **ElasticsearchOperations** combines the DocumentOperations and SearchOperations interfaces.
+
+Basically one should just use the ElasticsearchOperations to interact with the Elasticsearch cluster. When using repositories, this instance is used under the hood as well.
+
+The **ElasticsearchTemplate** (which inherits ElasticsearchOperations) is a bit of old approach. We could directly inject the ElasticsearchOperations. 
+
+4. We could also use non-blocking **Reactive Elasticsearch Operations** 

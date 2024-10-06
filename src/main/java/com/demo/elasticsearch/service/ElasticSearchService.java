@@ -6,6 +6,8 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import com.demo.elasticsearch.model.Product;
 import com.demo.elasticsearch.util.ElasticsearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.IndexOperations;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,10 +18,20 @@ import java.util.function.Supplier;
 public class ElasticSearchService {
 
     private final ElasticsearchClient elasticsearchClient;
+    private final ElasticsearchOperations elasticsearchOperations;
+    private final IndexOperations indexOperations;
 
     @Autowired
-    public ElasticSearchService(ElasticsearchClient elasticsearchClient) {
+    public ElasticSearchService(ElasticsearchClient elasticsearchClient, ElasticsearchOperations elasticsearchOperations, IndexOperations indexOperations) {
         this.elasticsearchClient = elasticsearchClient;
+        this.elasticsearchOperations = elasticsearchOperations;
+        this.indexOperations = indexOperations;
+    }
+
+    public void createDeleteIndex() {
+        indexOperations.create();
+        indexOperations.putMapping();
+        indexOperations.delete();
     }
 
     // Searches in all indexes (documents/tables)
@@ -27,6 +39,11 @@ public class ElasticSearchService {
         Supplier<Query> supplier = ElasticsearchUtil.supplier();
         SearchResponse<Map> searchResponse = elasticsearchClient.search(s -> s.query(supplier.get()), Map.class);
         System.out.println("elsticsearch query is " + supplier.get().toString());
+
+//        elasticsearchClient.delete();
+//        elasticsearchClient.create();
+
+//        elasticsearchOperations.search((org.springframework.data.elasticsearch.core.query.Query) supplier.get(), Map.class);
 
         return searchResponse;
     }
